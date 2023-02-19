@@ -57,3 +57,4 @@ Inspect docker
 > docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgresql
 
 Note que a configuração do contêiner do PostgreSQL inclui o nome do banco de dados e um volume compartilhado para persistir os dados do banco. Além disso, a configuração do contêiner do PgAdmin inclui um link para o contêiner do PostgreSQL."# banco_api_fastAPI" 
+"# banco_api_fastAPI" 

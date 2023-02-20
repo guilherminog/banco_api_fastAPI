@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from database import models, database
+from database.database import models, database
 from schemas import client as client_schema
 
 router = APIRouter()
@@ -47,9 +47,9 @@ def update_client(client_id: int, client: client_schema.ClientUpdate, db: Sessio
     db_client = db.query(models.Client).filter(models.Client.id == client_id).first()
     if not db_client:
         raise HTTPException(status_code=404, detail="Client not found")
-    for var, value in vars(client).items():
-        if value is not None:
-            setattr(db_client, var, value)
+    update_data = client.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_client, key, value)
     db.add(db_client)
     db.commit()
     db.refresh(db_client)
@@ -63,11 +63,3 @@ def delete_client(client_id: int, db: Session = Depends(get_db)):
     db.delete(db_client)
     db.commit()
     return {"message": "Client deleted successfully"}
-
-
-
-'''
-precisa atualizar classe ClientUpdate corretamente e 
-que o importe esteja sendo feito de forma adequada 
-no arquivo routers/client.py.
-'''
